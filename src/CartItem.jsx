@@ -9,27 +9,50 @@ const CartItem = ({ onContinueShopping }) => {
 
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
- 
+    let total = 0;
+    cart.forEach(item => {
+      // Convert cost string (e.g., "$10.00") to number and multiply by quantity
+      const costNum = parseFloat(item.cost.substring(1));
+      total += costNum * item.quantity;
+    });
+    return total;
   };
 
+  // 2. Continue shopping handler
   const handleContinueShopping = (e) => {
-   
+    if (onContinueShopping) {
+      onContinueShopping(e);
+    }
   };
 
+  // 3. Checkout handler (Alert placeholder)
+  const handleCheckoutShopping = (e) => {
+    alert('Functionality to be added for future reference');
+  };
 
-
+  // 4. Increment item quantity
   const handleIncrement = (item) => {
+    dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
   };
 
+  // 4. Decrement item quantity (Remove if quantity drops to 0)
   const handleDecrement = (item) => {
-   
+    if (item.quantity > 1) {
+      dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+    } else {
+      dispatch(removeItem(item.name));
+    }
   };
 
+  // 5. Remove item completely from cart
   const handleRemove = (item) => {
+    dispatch(removeItem(item.name));
   };
 
-  // Calculate total cost based on quantity for an item
+  // 6. Calculate subtotal for each plant item type
   const calculateTotalCost = (item) => {
+    const costNum = parseFloat(item.cost.substring(1));
+    return costNum * item.quantity;
   };
 
   return (
